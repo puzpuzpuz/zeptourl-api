@@ -1,0 +1,12 @@
+{
+  "express": {
+    "allowAllOrigins": true
+  },
+  "cors": {
+    "baseUrl": "http://localhost:3000"
+  },
+  "cassandra": {
+    "contactPoints": "localhost",
+    "keyspace": "zepto_db"
+  }
+}

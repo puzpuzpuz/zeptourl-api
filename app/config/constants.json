@@ -1,0 +1,9 @@
+{
+  "errors": {
+    "UNKNOWN_ERROR": 100,
+    "VALIDATION_ERROR": 101,
+    "NOT_FOUND_ERROR": 102,
+    "SCHEMA_VALIDATION_ERROR": 103,
+    "INTERNAL_SERVER_ERROR": 500
+  }
+}

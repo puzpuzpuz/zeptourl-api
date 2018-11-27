@@ -1,0 +1,32 @@
+{
+  "app": {
+    "zUrlGenRetries": 3,
+    "zUrlLength": 8
+  },
+  "express": {
+    "port": 3000,
+    "limit": "1mb"
+  },
+  "loggers": {
+    "app": {
+      "level": "debug",
+      "label": "app"
+    },
+    "service": {
+      "level": "debug",
+      "label": "service"
+    },
+    "express": {
+      "level": "debug",
+      "label": "express"
+    },
+    "utils": {
+      "level": "debug",
+      "label": "utils"
+    },
+    "tests": {
+      "level": "debug",
+      "label": "tests"
+    }
+  }
+}

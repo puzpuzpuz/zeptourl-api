@@ -1,0 +1,46 @@
+version: '3'
+services:
+  zeptourl-api:
+    build:
+      context: .
+      dockerfile: etc/zeptourl-api.dockerfile
+    # TODO: return nodemon
+    #nodemon -L -e js,json --inspect=5858 app/app.js
+    command: npm run start
+    image: zeptourl-api:development
+    volumes:
+      - "./app:/usr/src/zeptourl-api/app"
+    container_name: zeptourl-api
+    environment:
+      NODE_ENV: "development"
+      "cassandra:contactPoints": "zeptourl-api-cassandra"
+      PORT: 3000
+    ports:
+      - "3000:3000"
+      - "5858:5858"
+    links:
+      - zeptourl-api-cassandra
+    restart: unless-stopped
+    depends_on:
+      - zeptourl-api-cassandra
+  # cassandra
+  zeptourl-api-cassandra:
+    image: cassandra:3.11
+    container_name: zeptourl-api-cassandra
+    ports: 
+      - "9042:9042"
+    restart: always
+    # TODO: revert later
+    # volumes:
+    #   - ./cassandra_data:/var/lib/cassandra
+  # TODO: change to a less error-prone
+  # executes schema seed script for cassandra
+  zeptourl-api-cassandra-schema:
+    image: cassandra:3.11
+    container_name: zeptourl-api-cassandra-schema
+    depends_on:
+      - zeptourl-api-cassandra
+    restart: on-failure
+    volumes:
+      - ./etc/schema.cql:/schema.cql
+    command: /bin/bash -c "sleep 30 && cqlsh zeptourl-api-cassandra -f /schema.cql"
