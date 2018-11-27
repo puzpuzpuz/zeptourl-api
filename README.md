@@ -4,7 +4,7 @@ A lightweight TinyURL-like demo application, a RESTful web service. Built with N
 
 ## Overview
 
-The main problem with TinyURL-like application is scaling. This app solves the problem in one of the most simple, yet scalable manners.
+The main problem with TinyURL-like application is scaling. This app solves the problem in one of the most simple, yet good enough manners.
 
 Each time when a new URL minification request is received, the app generates a random URL (let's call it zURL) which is a Base32-encoded string of a constant length (specified in the config). Then it tries to insert a new record into Cassandra. The insert fails in case of a possible collision (thanks to the [`IF NOT EXISTS` clause](https://docs.datastax.com/en/cql/3.3/cql/cql_reference/cqlInsert.html)). This process repeats for the given number of times (also specified in the config).
 
