@@ -4,43 +4,50 @@ services:
     build:
       context: .
       dockerfile: etc/zeptourl-api.dockerfile
-    # TODO: return nodemon
-    #nodemon -L -e js,json --inspect=5858 app/app.js
-    command: npm run start
+    command: /bin/bash -c "echo 'starting node.js app' && sleep 60 && npm run start"
     image: zeptourl-api:development
     volumes:
       - "./app:/usr/src/zeptourl-api/app"
     container_name: zeptourl-api
     environment:
       NODE_ENV: "development"
-      "cassandra:contactPoints": "zeptourl-api-cassandra"
+      "cassandra:contactPoints": "cassandra-node-1"
       PORT: 3000
     ports:
       - "3000:3000"
       - "5858:5858"
     links:
-      - zeptourl-api-cassandra
+      - cassandra-node-1
     restart: unless-stopped
     depends_on:
-      - zeptourl-api-cassandra
+      - cassandra-node-1
   # cassandra
-  zeptourl-api-cassandra:
+  cassandra-node-1:
     image: cassandra:3.11
-    container_name: zeptourl-api-cassandra
-    ports: 
+    container_name: cassandra-node-1
+    environment:
+      JVM_OPTS: "-Xms1024M -Xmx1024M"
+    ports:
       - "9042:9042"
-    restart: always
-    # TODO: revert later
-    # volumes:
-    #   - ./cassandra_data:/var/lib/cassandra
-  # TODO: change to a less error-prone
-  # executes schema seed script for cassandra
-  zeptourl-api-cassandra-schema:
+  cassandra-node-2:
     image: cassandra:3.11
-    container_name: zeptourl-api-cassandra-schema
+    container_name: cassandra-node-2
+    command: /bin/bash -c "echo 'waiting for seed node' && sleep 45 && /docker-entrypoint.sh cassandra -f"
+    environment:
+      JVM_OPTS: "-Xms1024M -Xmx1024M"
+      CASSANDRA_SEEDS: "cassandra-node-1"
+    links:
+      - cassandra-node-1
+    restart: on-failure
     depends_on:
-      - zeptourl-api-cassandra
+      - cassandra-node-1
+  # executes schema seed script for cassandra
+  cassandra-schema:
+    image: cassandra:3.11
+    container_name: cassandra-schema
+    depends_on:
+      - cassandra-node-1
     restart: on-failure
     volumes:
       - ./etc/schema.cql:/schema.cql
-    command: /bin/bash -c "sleep 30 && cqlsh zeptourl-api-cassandra -f /schema.cql"
+    command: /bin/bash -c "echo 'waiting for seed node' && sleep 30 && cqlsh cassandra-node-1 -f /schema.cql"

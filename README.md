@@ -22,9 +22,12 @@ To start all application components run the following command:
 docker-compose up
 ```
 
-To start the Node.js application only run the following command:
+This command will start a Cassandra cluster of two nodes and the app itself, so it may take a while (at least 60s). Also make sure that you have at least 2GB of memory available for Docker.
+
+To start the Node.js application only run the following commands:
 
 ```bash
+npm ci
 npm run start
 ```
 
@@ -43,5 +46,4 @@ The app is using [nconf](https://github.com/indexzero/nconf) internally to manag
 * CLS
 * Loopbench into system-info#metrics
 * Built-in Swagger spec
-* Cassandra cluster (2+ nodes)
 * Unit tests

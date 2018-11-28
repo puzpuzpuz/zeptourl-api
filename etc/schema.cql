@@ -1,5 +1,5 @@
 CREATE KEYSPACE IF NOT EXISTS zepto_db
-  WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+  WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 2};
 
 USE zepto_db;
 
