@@ -35,7 +35,7 @@ async function generateUrl (req, res) {
 
   res.status(httpStatus.CREATED)
   res.json({
-    zUrl: zUrlCandidate, // TODO: consider returning full URL here
+    zUrl: zUrlCandidate,
     originalUrl: url
   })
 }

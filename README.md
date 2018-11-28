@@ -24,6 +24,8 @@ docker-compose up
 
 This command will start a Cassandra cluster of two nodes and the app itself, so it may take a while (at least 60s). Also make sure that you have at least 2GB of memory available for Docker.
 
+Once started the API will be available on [http://localhost:3000/api/v1](http://localhost:3000/api/v1).
+
 To start the Node.js application only run the following commands:
 
 ```bash
@@ -31,7 +33,7 @@ npm ci
 npm run start
 ```
 
-In the later case, you probably need to change DB connection settings (`app/config/development.json`).
+In this case, you might need to change DB connection settings (see `app/config/development.json` config).
 
 ## Configuration
 
@@ -39,11 +41,17 @@ Current configuration type is specified by `NODE_ENV` environment variable. Defa
 
 The app is using [nconf](https://github.com/indexzero/nconf) internally to manage the configuration. So any config parameter can be overridden via environment variables. For instance, `app.zUrlGenRetries` parameter can be overridden by an env var with `app:zUrlGenRetries`.
 
-## TODO
+## API Specification
 
-* lighter logger (see fastly recommendations)
-* In-code TODOs
-* CLS
-* Loopbench into system-info#metrics
-* Built-in Swagger spec
+API specification is described in `api-spec.yml` file (in Open API v3.0 format). Once dev environment is started by docker-compose, Swagger UI becomes available on [http://localhost:8080/](http://localhost:8080/).
+
+## License
+
+Licensed under MIT.
+
+## TODOs
+
 * Unit tests
+* Use a lighter logger (see [pino](https://github.com/pinojs/pino))
+* Use CLS for request tracing in logs
+* Integrate [loopbench](https://github.com/mcollina/loopbench) into system-info#metrics

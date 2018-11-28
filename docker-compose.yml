@@ -51,3 +51,13 @@ services:
     volumes:
       - ./etc/schema.cql:/schema.cql
     command: /bin/bash -c "echo 'waiting for seed node' && sleep 30 && cqlsh cassandra-node-1 -f /schema.cql"
+  # API spec
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-ui
+    volumes:
+      - ./api-spec.yml:/api-spec.yml
+    environment:
+      SWAGGER_JSON: /api-spec.yml
+    ports:
+      - "8080:8080"
