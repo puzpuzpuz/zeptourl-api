@@ -14,7 +14,7 @@ While this design assumes that collisions will be happening more and more freque
 
 The app assumes using Node.js 10 and Cassandra 3. You can use Docker and Docker Compose for dev environment as well.
 
-## Dev environment
+## Dev Environment
 
 To start all application components run the following command:
 
