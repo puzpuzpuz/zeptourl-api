@@ -47,11 +47,13 @@ API specification is described in `api-spec.yml` file (in Open API v3.0 format).
 
 ## License
 
+Copyright 2018 puzpuzpuz
+
 Licensed under MIT.
 
 ## TODOs
 
-* Unit tests
-* Use a more lightweight logger (see [pino](https://github.com/pinojs/pino))
+* Implement sufficient amount of unit tests
 * Use CLS for request tracing in logs
 * Integrate [loopbench](https://github.com/mcollina/loopbench) into system-info#metrics
+* Use a more lightweight logger (see [pino](https://github.com/pinojs/pino))
