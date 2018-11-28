@@ -1,0 +1,91 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: zeptourl-api
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:3000/api/v1
+paths:
+  /urls:
+    post:
+      summary: Minify a URL
+      operationId: createZUrl
+      tags:
+        - urls
+      requestBody:
+        description: Original URL
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OriginalURL'
+      responses:
+        '201':
+          description: Info for the generated zURL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ZUrl"
+        default:
+          description: Client or server-side error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /urls/{zUrl}:
+    get:
+      summary: Find original URL
+      operationId: findZUrl
+      tags:
+        - urls
+      parameters:
+        - name: zUrl
+          in: path
+          required: true
+          description: The zURL value
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Info for the found zURL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ZUrl"
+        default:
+          description: Client or server-side error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+components:
+  schemas:
+    ZUrl:
+      required:
+        - zUrl
+        - originalUrl
+      properties:
+        zUrl:
+          type: string
+          description: zURL (id, not a full URL) value.
+        originalUrl:
+          type: string
+          description: A valid URL
+    OriginalURL:
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          description: A valid URL
+    Error:
+      required:
+        - code
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
