@@ -10,6 +10,9 @@ const cors = require('cors')
 module.exports = async app => {
   logger.info('Setup Express middlewares: started', config)
 
+  // we don't get any benefits with ETags, so disable
+  app.set('etag', false)
+
   // disable x-powered-by header
   app.disable('x-powered-by')
 
