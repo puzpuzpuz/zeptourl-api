@@ -52,6 +52,6 @@ Licensed under MIT.
 ## TODOs
 
 * Unit tests
-* Use a lighter logger (see [pino](https://github.com/pinojs/pino))
+* Use a more lightweight logger (see [pino](https://github.com/pinojs/pino))
 * Use CLS for request tracing in logs
 * Integrate [loopbench](https://github.com/mcollina/loopbench) into system-info#metrics
