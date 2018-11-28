@@ -6,9 +6,9 @@ A lightweight TinyURL-like demo application, a RESTful web service. Built with N
 
 The main problem with TinyURL-like application is scaling. This app solves the problem in one of the most simple, yet good enough manners.
 
-Each time when a new URL minification request is received, the app generates a random URL (let's call it zURL) which is a Base32-encoded string of a constant length (specified in the config). Then it tries to insert a new record into Cassandra. The insert fails in case of a possible collision (thanks to the [`IF NOT EXISTS` clause](https://docs.datastax.com/en/cql/3.3/cql/cql_reference/cqlInsert.html)). This process repeats for the given number of times (also specified in the config).
+Each time when a new URL minification request is received, the app generates a random URL (let's call it zURL) which is a Base32-encoded string of a constant length (specified in the config). Then it tries to insert a new record into Cassandra. The insert fails in case of a possible collision (thanks to the [`IF NOT EXISTS` clause](https://docs.datastax.com/en/cql/3.3/cql/cql_reference/cqlInsert.html)). This process repeats several times (also specified in the config).
 
-While this design assumes that collisions will be happening more and more frequently with the DB grow, it may be enhanced in a quite simple way. Number of collisions per zURL generation request may be somehow monitored externally, e.g. via logging and ELK-stack. Once it reaches a certain threshold, say two collisions per 5th percentile of requests, new Node.js instances with an increased zURL length config parameter may be deployed.
+While this design assumes that collisions will be happening more and more frequently while the DB grows, it may be enhanced in a quite simple way. Number of collisions per zURL generation request may be somehow monitored externally, e.g. via logging and ELK-stack. Once it reaches a certain threshold, say two collisions per 5th percentile of requests, new Node.js instances with an increased value of the length parameter may be deployed.
 
 ## Requirements
 
