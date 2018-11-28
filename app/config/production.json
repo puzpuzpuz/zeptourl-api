@@ -1,9 +1,6 @@
 {
   "express": {
-    "allowAllOrigins": true
-  },
-  "cors": {
-    "baseUrl": "override by environment variable"
+    "corsOrigin": "change or override by environment variable"
   },
   "cassandra": {
     "contactPoints": "override by environment variable",

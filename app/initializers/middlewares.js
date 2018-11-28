@@ -5,7 +5,7 @@ const config = require('../utils/config').get('express')
 const middlewares = require('../utils/middlewares')
 const express = require('express')
 const expressWinston = require('express-winston')
-const bodyParser = require('body-parser')
+const cors = require('cors')
 
 module.exports = async app => {
   logger.info('Setup Express middlewares: started', config)
@@ -19,12 +19,22 @@ module.exports = async app => {
     meta: false,
     msg: '{{req.method}} {{req.url}} {{res.statusCode}} - {{res.responseTime}} ms'
   }))
-  app.use(bodyParser.json({ limit: config.limit }))
 
-  // CORS support TODO
-  if (config.allowAllOrigins) {
-    app.use(middlewares.cors)
-  }
+  // restrict supported content-types
+  app.use(middlewares.contentTypeLimiter({
+    methods: ['POST', 'PUT'],
+    types: ['application/json']
+  }))
+
+  // body parser
+  app.use(express.json({ limit: config.limit }))
+
+  // cors setup
+  app.use(cors({
+    origin: config.corsOrigin,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+  }))
 
   // routes will be set up on the next phase
   app.route = express.Router()

@@ -5,7 +5,8 @@
   },
   "express": {
     "port": 3000,
-    "limit": "1mb"
+    "limit": "100kb",
+    "corsOrigin": false
   },
   "loggers": {
     "app": {

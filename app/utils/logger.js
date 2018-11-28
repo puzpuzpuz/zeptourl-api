@@ -2,26 +2,26 @@
 
 const winston = require('winston')
 const { combine, label, colorize, timestamp, splat, printf } = winston.format
-const _ = require('lodash')
 const config = require('./config')
 
 const loggers = {}
-_.forEach(config.get('loggers'), (val, key) => {
-  winston.loggers.add(key, {
-    format: combine(
-      timestamp(),
-      label({ label: val.label }),
-      colorize(),
-      splat(),
-      printf((info) =>
-        `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`
-      )
-    ),
-    transports: [
-      new winston.transports.Console({ level: val.level })
-    ]
+Object.entries(config.get('loggers'))
+  .forEach(([name, params]) => {
+    winston.loggers.add(name, {
+      format: combine(
+        timestamp(),
+        label({ label: params.label }),
+        colorize(),
+        splat(),
+        printf((info) =>
+          `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`
+        )
+      ),
+      transports: [
+        new winston.transports.Console({ level: params.level })
+      ]
+    })
+    loggers[name] = winston.loggers.get(name)
   })
-  loggers[key] = winston.loggers.get(key)
-})
 
 module.exports = loggers

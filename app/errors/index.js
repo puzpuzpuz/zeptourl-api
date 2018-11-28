@@ -39,6 +39,15 @@ class NotFoundError extends AbstractError {
   }
 }
 
+class WrongContentTypeError extends AbstractError {
+  constructor (message) {
+    super(message, Array.prototype.slice.call(arguments, 1))
+
+    this.code = errors.UNSUPPORTED_REQUEST_ERROR
+    this.status = httpStatus.NOT_ACCEPTABLE
+  }
+}
+
 class ValidationError extends AbstractError {
   constructor (message, fields) {
     super(message, Array.prototype.slice.call(arguments, 2))
@@ -52,5 +61,6 @@ class ValidationError extends AbstractError {
 module.exports = {
   InternalServerError,
   NotFoundError,
+  WrongContentTypeError,
   ValidationError
 }

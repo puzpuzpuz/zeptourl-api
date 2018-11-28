@@ -1,9 +1,9 @@
 'use strict'
 
 const logger = require('../utils/logger').service
-const errors = require('../errors')
+const { NotFoundError, InternalServerError } = require('../errors')
 const dbClient = require('../utils/cassandra-client')
-const types = require('cassandra-driver').types
+const { types } = require('cassandra-driver')
 const crypto = require('crypto')
 const util = require('util')
 const randomBytes = util.promisify(crypto.randomBytes)
@@ -19,7 +19,7 @@ async function findUrl (zUrl) {
 
   if (result.rowLength === 0) {
     logger.error('URL \'%s\' was not found', zUrl)
-    throw new errors.NotFoundError('URL was not found.')
+    throw new NotFoundError('URL was not found.')
   }
 
   return result.rows[0]
@@ -44,8 +44,8 @@ async function saveUrl (zUrl, originalUrl) {
     // return 'inserted' flag
     return result.rows[0]['[applied]']
   } catch (err) {
-    logger.error('URL \'%s\' insert failed. Reason:\n%o', zUrl, err)
-    throw new errors.InternalServerError('Persistence failure occurred.')
+    logger.error('zURL \'%s\' insert failed. Reason:\n%o', zUrl, err)
+    throw new InternalServerError('Persistence failure occurred.')
   }
 }
 
@@ -60,8 +60,8 @@ async function generateZUrl (length) {
     const urlBase32 = base32.encode(urlBytes)
     return urlBase32.replace('=', '').toLowerCase()
   } catch (err) {
-    logger.error('URL generation failed. Reason:\n%o', err)
-    throw new errors.InternalServerError('URL generation failed.')
+    logger.error('zURL generation failed. Reason:\n%o', err)
+    throw new InternalServerError('URL generation failed.')
   }
 }
 

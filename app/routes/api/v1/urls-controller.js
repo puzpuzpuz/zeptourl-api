@@ -2,9 +2,9 @@
 
 const logger = require('../../../utils/logger').app
 const config = require('../../../utils/config').get('app')
-const errors = require('../../../errors')
-const asyncMiddleware = require('../../../utils/middlewares').asyncMiddleware
-const urlService = require('../../../services').urlService
+const { InternalServerError } = require('../../../errors')
+const { asyncMiddleware } = require('../../../utils/middlewares')
+const { urlService } = require('../../../services')
 const httpStatus = require('http-status')
 
 async function findUrl (req, res) {
@@ -23,19 +23,19 @@ async function generateUrl (req, res) {
   let success = false
   let attemptCnt = 0
   while (!success && attemptCnt < config.zUrlGenRetries) {
-    logger.debug('Starting zUrl generation. Attempt #%s. Url: %s', attemptCnt, url)
+    logger.debug('Starting zURL generation. Attempt #%s. Url: %s', attemptCnt, url)
     zUrlCandidate = await urlService.generateZUrl(config.zUrlLength)
     success = await urlService.saveUrl(zUrlCandidate, url)
     attemptCnt++
   }
 
   if (!success) {
-    throw new errors.InternalServerError('Failed to generate a new zURL.')
+    throw new InternalServerError('Failed to generate a new zURL.')
   }
 
   res.status(httpStatus.CREATED)
   res.json({
-    zUrl: zUrlCandidate,
+    zUrl: zUrlCandidate, // TODO: consider returning full URL here
     originalUrl: url
   })
 }

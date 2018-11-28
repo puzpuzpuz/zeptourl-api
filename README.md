@@ -38,7 +38,10 @@ The app is using [nconf](https://github.com/indexzero/nconf) internally to manag
 
 ## TODO
 
+* lighter logger (see fastly recommendations)
 * In-code TODOs
-* Unit tests
+* CLS
+* Loopbench into system-info#metrics
 * Built-in Swagger spec
 * Cassandra cluster (2+ nodes)
+* Unit tests

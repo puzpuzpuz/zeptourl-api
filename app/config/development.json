@@ -1,9 +1,6 @@
 {
   "express": {
-    "allowAllOrigins": true
-  },
-  "cors": {
-    "baseUrl": "http://localhost:3000"
+    "corsOrigin": "*"
   },
   "cassandra": {
     "contactPoints": "localhost",

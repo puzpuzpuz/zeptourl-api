@@ -2,7 +2,7 @@
 
 const logger = require('./logger').utils
 const config = require('./config')
-const errors = require('../errors')
+const { NotFoundError, WrongContentTypeError } = require('../errors')
 const httpStatus = require('http-status')
 
 /**
@@ -18,11 +18,26 @@ function asyncMiddleware (fn) {
 }
 
 /**
+ * Constructs a simple middleware that restricts content types for certain HTTP methods.
+ * @param {Object} options required options object
+ * @param {Array.<string>} options.methods HTTP methods
+ * @param {Array.<string>} options.types supported content types
+ */
+function contentTypeLimiter ({ methods, types }) {
+  return (req, res, next) => {
+    if (methods.includes(req.method) && !types.includes(req.headers['content-type'])) {
+      return next(new WrongContentTypeError('Content type is not supported.'))
+    }
+    next()
+  }
+}
+
+/**
  * Not found handling middleware.
  */
 function notFoundHandler (req, res, next) {
   logger.info('Not found middleware: handling url: %s', req.url)
-  next(new errors.NotFoundError())
+  next(new NotFoundError('Requested resource does not exist.'))
 }
 
 /**
@@ -45,29 +60,9 @@ function errorHandler (err, req, res, next) {
   res.json(errorDetails)
 }
 
-/**
- * Middleware for CORS headers support.
- */
-function cors (req, res, next) {
-  // TODO: insecure wildcard (use urls.baseUrl)
-  res.set('Access-Control-Allow-Origin', req.get('origin') ? req.get('origin') : '*')
-  res.set('Access-Control-Allow-Credentials', true)
-  res.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT')
-  res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization, ' +
-    'Pragma, Cache-Control, If-Modified-Since')
-  res.set('Access-Control-Expose-Headers', 'Authorization')
-
-  if (req.method === 'OPTIONS') {
-    logger.debug('middlewares.cors -> options done')
-    return res.sendStatus(httpStatus.OK)
-  }
-
-  next()
-}
-
 module.exports = {
   asyncMiddleware,
-  notFoundHandler: notFoundHandler,
-  errorHandler: errorHandler,
-  cors: cors
+  contentTypeLimiter,
+  notFoundHandler,
+  errorHandler
 }
