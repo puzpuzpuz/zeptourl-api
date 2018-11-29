@@ -1,5 +1,7 @@
 module.exports = {
   clearMocks: true,
   errorOnDeprecated: true,
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  collectCoverage: true,
+  coverageReporters: ['html']
 }
