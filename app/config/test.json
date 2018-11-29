@@ -1,0 +1,9 @@
+{
+  "express": {
+    "corsOrigin": "*"
+  },
+  "cassandra": {
+    "contactPoints": "localhost",
+    "keyspace": "zepto_db"
+  }
+}
