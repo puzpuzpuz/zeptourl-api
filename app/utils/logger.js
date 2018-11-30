@@ -2,6 +2,7 @@
 
 const winston = require('winston')
 const { combine, label, colorize, timestamp, splat, printf } = winston.format
+const rTracer = require('express-rtracer')
 const config = require('./config')
 
 const loggers = {}
@@ -13,9 +14,12 @@ Object.entries(config.get('loggers'))
         label({ label: params.label }),
         colorize(),
         splat(),
-        printf((info) =>
-          `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`
-        )
+        printf((info) => {
+          const rid = rTracer.id()
+          return rid
+            ? `${info.timestamp} [${info.label}] [rid:${rid}] ${info.level}: ${info.message}`
+            : `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`
+        })
       ),
       transports: [
         new winston.transports.Console({ level: params.level })

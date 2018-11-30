@@ -53,7 +53,6 @@ Licensed under MIT.
 
 ## TODOs
 
-* Implement sufficient amount of unit tests
-* Use CLS for request tracing in logs
+* Implement sufficient amount of unit tests (started)
 * Integrate [loopbench](https://github.com/mcollina/loopbench) into system-info#metrics
 * Use a more lightweight logger (see [pino](https://github.com/pinojs/pino))
