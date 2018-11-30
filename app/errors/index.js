@@ -49,10 +49,9 @@ class WrongContentTypeError extends AbstractError {
 }
 
 class ValidationError extends AbstractError {
-  constructor (message, fields) {
+  constructor (message) {
     super(message, Array.prototype.slice.call(arguments, 2))
 
-    this.fields = fields || []
     this.code = errors.VALIDATION_ERROR
     this.status = httpStatus.BAD_REQUEST
   }

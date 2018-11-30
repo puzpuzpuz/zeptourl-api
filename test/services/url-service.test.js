@@ -8,7 +8,6 @@ const { NotFoundError } = require('../../app/errors')
 const urlService = require('../../app/services/url-service')
 
 describe('url-service', () => {
-
   test('find existing zURL - should succeed', () => {
     const zUrlRec = {
       z_url: 't1e2s3t4',
@@ -30,5 +29,4 @@ describe('url-service', () => {
     return urlService.findUrl('zurl')
       .catch(e => expect(e).toBeInstanceOf(NotFoundError))
   })
-
 })

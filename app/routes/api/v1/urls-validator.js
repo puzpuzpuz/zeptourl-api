@@ -3,10 +3,13 @@
 const { ValidationError } = require('../../../errors')
 const validator = require('validator')
 
+const zUrlRe = /^[a-z2-7]+$/
+
 function validateFindUrl (req, res, next) {
   const zUrl = req.params.zUrl
-  if (!validator.isLength(zUrl, { min: 0, max: 1024 })) {
-    return next(new ValidationError('zURL with an invalid length was provided.'))
+  if (!validator.isLength(zUrl, { min: 1, max: 1024 }) ||
+      !zUrlRe.test(zUrl)) {
+    return next(new ValidationError('zURL with an invalid value was provided.'))
   }
   next()
 }

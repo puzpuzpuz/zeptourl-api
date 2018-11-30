@@ -52,8 +52,7 @@ function errorHandler (err, req, res, next) {
 
   const errorDetails = {
     code: err.code || config.constants.errors.UNKNOWN_ERROR,
-    message: err.message,
-    fields: err.fields
+    message: err.message
   }
 
   res.status(err.status || httpStatus.INTERNAL_SERVER_ERROR)
