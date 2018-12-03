@@ -4,7 +4,7 @@ const logger = require('../utils/logger').app
 const config = require('../utils/config').get('express')
 const middlewares = require('../utils/middlewares')
 const express = require('express')
-const rTracer = require('express-rtracer')
+const rTracer = require('cls-rtracer')
 const expressWinston = require('express-winston')
 const cors = require('cors')
 
@@ -41,7 +41,7 @@ module.exports = async app => {
   }))
 
   // enable request id tracer
-  app.use(rTracer.middleware({ useHeader: false }))
+  app.use(rTracer.expressMiddleware())
 
   // routes will be set up on the next phase
   app.route = express.Router()

@@ -51,8 +51,8 @@ Copyright 2018 puzpuzpuz
 
 Licensed under MIT.
 
-## TODOs
+## Possible enhancements
 
-* Implement sufficient amount of unit tests (started)
+* Implement sufficient amount of unit tests (there are a few tests at the moment)
 * Integrate [loopbench](https://github.com/mcollina/loopbench) into system-info#metrics
-* Use a more lightweight logger (see [pino](https://github.com/pinojs/pino))
+* Try using a more lightweight logger (see [pino](https://github.com/pinojs/pino))

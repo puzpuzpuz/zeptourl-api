@@ -2,7 +2,7 @@
 
 const winston = require('winston')
 const { combine, label, colorize, timestamp, splat, printf } = winston.format
-const rTracer = require('express-rtracer')
+const rTracer = require('cls-rtracer')
 const config = require('./config')
 
 const loggers = {}
